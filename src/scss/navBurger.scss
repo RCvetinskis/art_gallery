@@ -100,8 +100,8 @@
   justify-content: center;
   gap: 10px;
   animation-name: dropDown;
-  animation-duration: 0.4s;
-  animation-timing-function: ease-in-out;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
   li {
     border-bottom: 2px solid $red-color;
   }

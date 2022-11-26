@@ -1,0 +1,53 @@
+.email-inputs {
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  input {
+    width: 300px;
+    padding: 5px;
+    border: none;
+    box-shadow: 2px 2px 4px 4px rgb(26, 3, 3);
+    border-radius: 4px;
+    margin: 10px 0;
+    outline: none;
+    font-size: 1.3em;
+  }
+  textarea {
+    margin: 10px;
+    width: 400px;
+    min-height: 50px;
+    padding: 5px;
+    height: 50px;
+    resize: none;
+    font-size: 1.3em;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px 4px rgb(26, 3, 3);
+    position: relative;
+    &::placeholder {
+      font-size: 1.3em;
+    }
+  }
+  .btn-msg {
+    width: 200px;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px 4px rgb(26, 3, 3);
+    border: none;
+    background-color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: $red-color;
+    text-shadow: 1px 1px 1px black;
+    transition: 0.3s ease-out;
+    &:hover {
+      cursor: pointer;
+      background-color: black;
+      box-shadow: 2px 2px 4px 4px $red-color;
+    }
+  }
+}
