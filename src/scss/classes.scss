@@ -1,0 +1,81 @@
+.column {
+  flex-direction: column;
+}
+
+.success {
+  color: rgb(40, 189, 40);
+}
+
+.error {
+  color: red;
+}
+.flex-column {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.text-center {
+  text-align: center;
+}
+.d-flex {
+  display: flex;
+}
+.jst-center {
+  justify-content: center;
+}
+.align-center {
+  align-items: center;
+}
+.jst-btw {
+  justify-content: space-between;
+}
+.jst-evenly {
+  justify-content: space-evenly;
+}
+.jst-around {
+  justify-content: space-around;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+
+.gap {
+  gap: 20px;
+}
+.margin10 {
+  margin: 10px;
+}
+
+.margin50 {
+  margin: 50px;
+}
+.grow1 {
+  flex-grow: 1;
+}
+.grow0 {
+  flex-grow: 0;
+}
+
+.gold {
+  color: gold;
+  font-weight: bolder;
+  font-size: 1.2em;
+}
+.damage {
+  color: red;
+  font-weight: bolder;
+  font-size: 1.2em;
+}
+.race {
+  color: greenyellow;
+  font-weight: bolder;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 50px auto;
+}
+.p10 {
+  padding: 10px;
+}
