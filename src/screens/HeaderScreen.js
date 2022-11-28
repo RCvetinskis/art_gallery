@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = () => {
+const HeaderScreen = () => {
   return (
     <div className="header-background  d-flex jst-center align-center">
       <div className="header-text">
@@ -15,4 +15,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderScreen;
