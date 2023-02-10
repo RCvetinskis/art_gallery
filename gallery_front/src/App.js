@@ -11,11 +11,9 @@ import Contact from "./components/Contact";
 import AdminPage from "./pages/AdminPage";
 import LoadingBox from "./components/LoadingBox";
 
-// todo onclick scroll animation, added galleryscreen, display 4x3x2x1 photos, on photo click open picture modal full screen and make swiper. Add to close contact modal on screen click
+// add admin panel, so admin could edit, delete, photos, change categories, titles
+// figure out good design
 
-// after login navigate to upload page, write code so only admin can use upload, add autologin for admin user
-
-// add admin panel, so admin could edit, delete, photos, change categories, titles, add input search to find photo easier, add filter, sort.
 function App() {
   const [showContact, setShowContact] = useState(false);
   const [admin, setAdmin] = useState(null);

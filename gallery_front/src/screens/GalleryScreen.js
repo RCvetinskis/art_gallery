@@ -9,6 +9,7 @@ import Pagination from "../components/Pagination";
 import mainContext from "../context/MainContext";
 import LoadingBox from "../components/LoadingBox";
 import SelectInput from "../components/inputs/SelectInput";
+import InputText from "../components/inputs/InputText";
 import {
   categoryOptions,
   artTypeOptions,
@@ -19,17 +20,25 @@ import { sortArray } from "../utilities/sortArray";
 const GalleryScreen = () => {
   const { loading, setLoading } = useContext(mainContext);
   const [showGallery, setShowGallery] = useState("Drawings");
+  const [sortingState, setSortingState] = useState("Default");
+
+  // state for/from api
   const [images, setImages] = useState([]);
   const [totalPages, setTotalPages] = useState();
   const [pageNumber, setPageNumber] = useState(0);
-  const [sortingState, setSortingState] = useState("Default");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [getCategories, setCategories] = useState([{ value: "All" }]);
+  const [getArtType, setArtType] = useState([{ value: "All" }]);
 
-  // fix default to show inintal value
   useEffect(() => {
+    const mapedCategories = getCategories.map((x) => x.value);
+    const mapedArtTypes = getArtType.map((x) => x.value);
     const getPhotos = async () => {
       setLoading(true);
       await axios
-        .get(`http://localhost:4000/photos?page=${pageNumber}`)
+        .get(
+          `http://localhost:4000/photos?page=${pageNumber}&category=${mapedCategories}&artType=${mapedArtTypes}&search=${searchQuery}`
+        )
         .then((response) => {
           const newImages = response.data.photos.map((singleData) => {
             const base64String = binaryToImage(singleData.img.data.data);
@@ -43,7 +52,7 @@ const GalleryScreen = () => {
     };
 
     getPhotos();
-  }, [pageNumber]);
+  }, [pageNumber, getCategories, getArtType, searchQuery]);
 
   let sortedImages = sortArray(images, sortingState);
 
@@ -52,6 +61,9 @@ const GalleryScreen = () => {
       <div className="d-flex justify-content-between align-items-center">
         <GalleryNav setShowGallery={setShowGallery} />
         <div className="d-flex gap-3">
+          <div>
+            <InputText setValue={setSearchQuery} />
+          </div>
           <div className="sorting">
             <label>Sort by:</label>
             <SelectInput
@@ -59,7 +71,7 @@ const GalleryScreen = () => {
               setValue={setSortingState}
               containerStyle={""}
               options={sortingOptions}
-              ismulti={false}
+              isMulti={false}
             />
           </div>
 
@@ -69,13 +81,15 @@ const GalleryScreen = () => {
               label={"Category"}
               containerStyle={""}
               options={[{ value: "All", label: "All" }, ...categoryOptions]}
-              ismulti={false}
+              isMulti={true}
+              setValue={setCategories}
             />
             <SelectInput
               label={"Art Type"}
               containerStyle={""}
               options={[{ value: "All", label: "All" }, ...artTypeOptions]}
-              ismulti={false}
+              isMulti={true}
+              setValue={setArtType}
             />
           </div>
         </div>
@@ -88,7 +102,6 @@ const GalleryScreen = () => {
       </div>
 
       {loading ? (
-        // <div>...Loading</div>
         <LoadingBox />
       ) : (
         <>

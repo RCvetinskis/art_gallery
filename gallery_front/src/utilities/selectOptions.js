@@ -10,7 +10,6 @@ export const artTypeOptions = [
 ];
 
 export const sortingOptions = [
-  { value: "Default", label: "Default" },
   { value: "Ascending", label: "Ascending" },
   { value: "Descending", label: "Descending" },
 ];
