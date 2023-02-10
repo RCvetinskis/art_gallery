@@ -23,13 +23,17 @@ module.exports = {
     const total = await photosDb.countDocuments({});
 
     const photos = await photosDb
-      .find({ title: { $regex: search, $options: "i" } })
+      .find({
+        title: { $regex: search, $options: "i" },
+      })
+      .limit(PAGE_SIZE)
+      .skip(PAGE_SIZE * page)
       .where("category")
       .in([...category])
       .where("artType")
-      .in([...artType])
-      .limit(PAGE_SIZE)
-      .skip(PAGE_SIZE * page);
+      .in([...artType]);
+
+    console.log(photos[0].category);
 
     if (photos) {
       return res.status(200).json({
@@ -72,6 +76,41 @@ module.exports = {
     } else {
       return res.status(500).json({
         message: "Image is not uploaded",
+        error: true,
+      });
+    }
+  },
+  editPhoto: async (req, res) => {
+    const { id } = req.params;
+    let updates = req.body;
+
+    for (let key in updates) {
+      if (!updates[key]) {
+        delete updates[key];
+      }
+    }
+
+    // if (updates.category !== "All") {
+    //   updates.category = updates.category.split(",");
+    // }
+
+    // if (updates.artType !== "All") {
+    //   updates.artType = updates.artType.split(",");
+    // }
+
+    const updatedPhoto = await photosDb.findByIdAndUpdate(id, updates, {
+      new: true,
+    });
+
+    if (updatedPhoto) {
+      return res.status(200).json({
+        message: "Photo updated",
+        error: false,
+        updatedPhoto,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Error updating photo",
         error: true,
       });
     }

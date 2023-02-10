@@ -13,6 +13,7 @@ import LoadingBox from "./components/LoadingBox";
 
 // add admin panel, so admin could edit, delete, photos, change categories, titles
 // figure out good design
+// figure out how to display pages when photos are filtered
 
 function App() {
   const [showContact, setShowContact] = useState(false);
