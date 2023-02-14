@@ -5,6 +5,7 @@ const {
   photos,
   postPhoto,
   editPhoto,
+  deleteImage,
 } = require("../controllers/photosController");
 const {
   adminLogin,
@@ -15,6 +16,7 @@ const {
 router.get("/photos", photos);
 router.post("/post-image", upload.single("image"), postPhoto);
 router.patch("/edit-image/:id", editPhoto);
+router.delete("/delete-image/:id", deleteImage);
 router.post("/admin-login", adminLogin);
 router.get("/admin-session", adminSession);
 router.get("/admin-logout", logout);

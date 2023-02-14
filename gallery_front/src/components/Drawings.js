@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ImageSlider from "../components/ImageSlider";
-import axios from "axios";
-
+import CustomModal from "./CustomModal";
+import DeletePhoto from "./DeletePhoto";
 const Drawings = ({ images }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(null);
-  const [id, setId] = useState("");
-
-  console.log(id);
-
-  const editPhoto = async () => {
-    await axios
-      .patch(`http://localhost:4000/edit-image/${id}`, {
-        title: "Changed title",
-        description: "Changed description",
-        img: "",
-        category: ["Animals", "Forest", "Nature"],
-        artType: ["Canvas", "Drawings"],
-      })
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error));
-  };
-
-  useEffect(() => {
-    editPhoto();
-  }, [id]);
+  const [selectPhoto, setSelectPhoto] = useState({
+    title: "",
+    description: "",
+    img: "",
+    category: ["Animals", "Forest", "Nature"],
+    artType: ["Canvas", "Drawings"],
+  });
+  const [openModal, setOpenModal] = useState(false);
 
   const openSliderPhoto = (index) => {
     setOpenSlider(true);
     setPhotoIndex(index);
   };
 
+  const openEditPhoto = (photo) => {
+    setSelectPhoto(photo);
+    setOpenModal(true);
+  };
+
   return (
     <div className="gallery-wrapper">
+      {openModal && (
+        <CustomModal
+          setModal={setOpenModal}
+          content="editPhoto"
+          photoToEdit={selectPhoto}
+        />
+      )}
       <div className="gallery-content ">
         {images.map((image, index) => (
           <div
@@ -40,9 +40,16 @@ const Drawings = ({ images }) => {
             className="image-card"
             key={image._id}
           >
-            <button className="btn btn-dark" onClick={() => setId(image._id)}>
-              Update Photo
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                className="btn btn-dark"
+                onClick={() => openEditPhoto(image)}
+              >
+                Update Photo
+              </button>
+              <DeletePhoto photoToDelete={image._id} />
+            </div>
+
             <p className="text-center">{image.title}</p>
 
             <img src={`data:image/jpeg;base64,${image.base64String}`} />

@@ -1,18 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { InputGroup } from "react-bootstrap";
-import axios from "axios";
 import InputUpload from "./inputs/InputUpload";
 import SelectInput from "./inputs/SelectInput";
 import InputText from "./inputs/InputText";
 import TextareaInput from "./inputs/TextareaInput";
 import { useNavigate } from "react-router-dom";
 import { categoryOptions, artTypeOptions } from "../utilities/selectOptions";
-const FormUpload = ({ setImagePreview }) => {
-  const [img, setImg] = useState(null);
-  const [category, setCategory] = useState([]);
-  const [title, setTitle] = useState("");
-  const [artType, setArtType] = useState([]);
-  const [description, setDescription] = useState("");
+const FormUpload = ({ stateValues, onSubmit, isEditing }) => {
   const [errors, setErrors] = useState({
     artType: "",
     category: "",
@@ -22,46 +16,14 @@ const FormUpload = ({ setImagePreview }) => {
   });
 
   const firstRender = useRef(true);
-  const nav = useNavigate();
 
   //  variable to check if everything is filled
   const errorsKeys = Object.keys(errors);
 
-  const uploadPhoto = async () => {
-    const catergoryValues = category.map((x) => x.value);
-    const artTypeValues = artType.map((x) => x.value);
-    const data = new FormData();
-    data.append("image", img);
-    data.append(
-      "category",
-
-      catergoryValues
-    );
-    data.append("title", title);
-    data.append("artType", artTypeValues);
-    data.append("description", description);
-
-    await axios
-      .post("http://localhost:4000/post-image", data)
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.message);
-        }
-      })
-      .catch((error) => console.log(error));
-    nav("/");
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
-    }, 200);
-  };
-
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setImg(e.target.files[0]);
-      setImagePreview(URL.createObjectURL(e.target.files[0]));
+      stateValues.setImg(e.target.files[0]);
+      stateValues.setImagePreview(URL.createObjectURL(e.target.files[0]));
     } else {
       e.target.value = null;
     }
@@ -69,30 +31,30 @@ const FormUpload = ({ setImagePreview }) => {
 
   const validateInput = () => {
     let newErrors = {};
-    if (!img) {
+    if (!stateValues.img) {
       newErrors.img = "Select image file";
     }
-    if (img) {
-      if (!img.type.includes("image")) {
+    if (stateValues.img) {
+      if (!stateValues.img.type.includes("image")) {
         newErrors.img = "Only images are allowed";
       }
     }
 
-    if (category.length === 0) {
+    if (stateValues.category.length === 0) {
       newErrors.category = "Please select category";
     }
 
-    if (!title) {
+    if (!stateValues.title) {
       newErrors.title = "Provide title";
-    } else if (title.length < 2) {
+    } else if (stateValues.title.length < 2) {
       newErrors.title = "Title should have atleast 3 characters";
     }
 
-    if (artType.length === 0) {
+    if (stateValues.artType.length === 0) {
       newErrors.artType = "Please select art type";
     }
 
-    if (!description) {
+    if (!stateValues.description) {
       newErrors.description = "Please provide some sort of description";
     }
     setErrors(newErrors);
@@ -105,26 +67,36 @@ const FormUpload = ({ setImagePreview }) => {
       return;
     }
     validateInput();
-  }, [img, category, description, artType, title]);
+  }, [
+    stateValues.img,
+    stateValues.category,
+    stateValues.description,
+    stateValues.artType,
+    stateValues.title,
+  ]);
 
   return (
     <InputGroup className="row g-3">
       {/* upload */}
-      <div className="col-md-6">
-        <InputUpload
-          value={img}
-          setValue={setImg}
-          setImagePreview={setImagePreview}
-          onImageChange={onImageChange}
-        />
-      </div>
+      {isEditing ? (
+        <></>
+      ) : (
+        <div className="col-md-6">
+          <InputUpload
+            value={stateValues.img}
+            setValue={stateValues.setImg}
+            setImagePreview={stateValues.setImagePreview}
+            onImageChange={onImageChange}
+          />
+        </div>
+      )}
 
       {/* category */}
       <div className="col-md-6">
         <SelectInput
           label="Category"
-          value={category}
-          setValue={setCategory}
+          value={stateValues.category}
+          setValue={stateValues.setCategory}
           options={categoryOptions}
           isMulti={true}
         />
@@ -138,8 +110,8 @@ const FormUpload = ({ setImagePreview }) => {
       <div className="col-md-6">
         <SelectInput
           label="Art Type"
-          value={artType}
-          setValue={setArtType}
+          value={stateValues.artType}
+          setValue={stateValues.setArtType}
           options={artTypeOptions}
           isMulti={true}
         />
@@ -149,28 +121,38 @@ const FormUpload = ({ setImagePreview }) => {
       {/* title */}
       <div className="col-md-6">
         {" "}
-        <InputText label={"title"} setValue={setTitle} />{" "}
+        <InputText label={"title"} setValue={stateValues.setTitle} />{" "}
         {errors.title && <span className="error">{errors.title}</span>}
       </div>
 
       {/* description */}
       <div className="col-12">
         {" "}
-        <TextareaInput setValue={setDescription} />
+        <TextareaInput setValue={stateValues.setDescription} />
         {errors.description && (
           <span className="error">{errors.description}</span>
         )}
       </div>
 
       <div className="col-12">
-        <button
-          onClick={uploadPhoto}
-          className="btn btn-outline-secondary"
-          type="button"
-          disabled={errorsKeys.length === 0 ? false : true}
-        >
-          Upload Photo
-        </button>
+        {isEditing ? (
+          <button
+            onClick={onSubmit}
+            className="btn btn-outline-secondary"
+            type="button"
+          >
+            Upload Photo
+          </button>
+        ) : (
+          <button
+            onClick={onSubmit}
+            className="btn btn-outline-secondary"
+            type="button"
+            disabled={errorsKeys.length === 0 ? false : true}
+          >
+            Upload Photo
+          </button>
+        )}
       </div>
     </InputGroup>
   );

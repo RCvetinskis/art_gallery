@@ -33,8 +33,6 @@ module.exports = {
       .where("artType")
       .in([...artType]);
 
-    console.log(photos[0].category);
-
     if (photos) {
       return res.status(200).json({
         message: "Photos are sent",
@@ -60,6 +58,7 @@ module.exports = {
       img: {
         data: fs.readFileSync("./public/uploads/" + req.file.filename),
         contentType: "image/png",
+        filename: req.file.filename,
       },
       title,
       category: categoryArray,
@@ -90,14 +89,6 @@ module.exports = {
       }
     }
 
-    // if (updates.category !== "All") {
-    //   updates.category = updates.category.split(",");
-    // }
-
-    // if (updates.artType !== "All") {
-    //   updates.artType = updates.artType.split(",");
-    // }
-
     const updatedPhoto = await photosDb.findByIdAndUpdate(id, updates, {
       new: true,
     });
@@ -111,6 +102,29 @@ module.exports = {
     } else {
       return res.status(400).json({
         message: "Error updating photo",
+        error: true,
+      });
+    }
+  },
+
+  deleteImage: async (req, res) => {
+    const { id } = req.params;
+    const deletedPhoto = await photosDb.findByIdAndRemove(id);
+
+    if (deletedPhoto) {
+      const imagePath = `./public/uploads/${deletedPhoto.img.filename}`;
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+      return res.status(200).json({
+        message: `Photo ${deletedPhoto.title} was succsessfuly deleted`,
+        error: false,
+      });
+    } else {
+      return res.status(500).json({
+        message: "Coudn't find photo to delete",
         error: true,
       });
     }

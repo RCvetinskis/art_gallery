@@ -11,7 +11,7 @@ import Contact from "./components/Contact";
 import AdminPage from "./pages/AdminPage";
 import LoadingBox from "./components/LoadingBox";
 
-// add admin panel, so admin could edit, delete, photos, change categories, titles
+// after photo updated post or deleted write promise to await changes and redirect to main page
 // figure out good design
 // figure out how to display pages when photos are filtered
 
@@ -21,6 +21,15 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState("");
 
+  // upload/edit states
+
+  const [img, setImg] = useState("");
+  const [category, setCategory] = useState([]);
+  const [title, setTitle] = useState("");
+  const [artType, setArtType] = useState([]);
+  const [description, setDescription] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+
   const values = {
     admin,
     setAdmin,
@@ -28,6 +37,18 @@ function App() {
     setLoading,
     requestError,
     setRequestError,
+    img,
+    setImg,
+    category,
+    setCategory,
+    title,
+    setTitle,
+    artType,
+    setArtType,
+    description,
+    setDescription,
+    imagePreview,
+    setImagePreview,
   };
 
   useEffect(() => {
@@ -54,7 +75,7 @@ function App() {
   return (
     <div className="App">
       <mainContext.Provider value={values}>
-        {showContact ? <Contact setShowContact={setShowContact} /> : <></>}
+        {showContact ? <Contact setModal={setShowContact} /> : <></>}
         <AppNavigation
           admin={admin}
           setAdmin={setAdmin}

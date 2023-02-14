@@ -22,6 +22,7 @@ const artGalleryPhotosSchema = new Schema(
     img: {
       data: Buffer,
       contentType: String,
+      filename: String,
     },
   },
   {

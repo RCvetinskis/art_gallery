@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-const SelectInput = ({ label, options, value, setValue, isMulti }) => {
+const SelectInput = ({ label, options, setValue, isMulti }) => {
   const animatedComponents = makeAnimated();
 
   return (
@@ -16,7 +16,6 @@ const SelectInput = ({ label, options, value, setValue, isMulti }) => {
         components={animatedComponents}
         isMulti={isMulti}
         options={options}
-        defaultValue={value}
         onChange={setValue}
       />
     </div>

@@ -40,11 +40,12 @@ const GalleryScreen = () => {
           `http://localhost:4000/photos?page=${pageNumber}&category=${mapedCategories}&artType=${mapedArtTypes}&search=${searchQuery}`
         )
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
           const newImages = response.data.photos.map((singleData) => {
             const base64String = binaryToImage(singleData.img.data.data);
             return { ...singleData, base64String };
           });
+
           setTotalPages(response.data.totalPages);
           setImages(newImages);
           setLoading(false);
