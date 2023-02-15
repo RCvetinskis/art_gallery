@@ -13,16 +13,15 @@ import LoadingBox from "./components/LoadingBox";
 
 // after photo updated post or deleted write promise to await changes and redirect to main page
 // figure out good design
-// figure out how to display pages when photos are filtered
 
 function App() {
   const [showContact, setShowContact] = useState(false);
   const [admin, setAdmin] = useState(null);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState("");
 
   // upload/edit states
-
   const [img, setImg] = useState("");
   const [category, setCategory] = useState([]);
   const [title, setTitle] = useState("");
@@ -33,6 +32,8 @@ function App() {
   const values = {
     admin,
     setAdmin,
+    images,
+    setImages,
     loading,
     setLoading,
     requestError,

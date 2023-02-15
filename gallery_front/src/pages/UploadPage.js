@@ -44,15 +44,16 @@ const UploadPage = () => {
         if (response.data.error) {
           alert(response.data.message);
         }
+
+        nav("/");
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
+          });
+        }, 1000);
       })
       .catch((error) => console.log(error));
-    nav("/");
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
-    }, 1000);
   };
   return (
     <Container>

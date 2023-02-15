@@ -4,7 +4,6 @@ import InputUpload from "./inputs/InputUpload";
 import SelectInput from "./inputs/SelectInput";
 import InputText from "./inputs/InputText";
 import TextareaInput from "./inputs/TextareaInput";
-import { useNavigate } from "react-router-dom";
 import { categoryOptions, artTypeOptions } from "../utilities/selectOptions";
 const FormUpload = ({ stateValues, onSubmit, isEditing }) => {
   const [errors, setErrors] = useState({

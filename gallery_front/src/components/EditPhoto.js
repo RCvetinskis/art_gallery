@@ -1,15 +1,16 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import FormUpload from "./FormUpload";
 import mainContext from "../context/MainContext";
 
-const EditPhoto = ({ photoToEdit }) => {
+const EditPhoto = ({ photoToEdit, setModal }) => {
   let stateValues;
   const {
     img,
     setImg,
     category,
     setCategory,
+    setImages,
     artType,
     setArtType,
     title,
@@ -28,7 +29,34 @@ const EditPhoto = ({ photoToEdit }) => {
         category: category.length < 0 ? category.map((x) => x.value) : null,
         artType: artType.length < 0 ? artType.map((x) => x.value) : null,
       })
-      .then((response) => console.log(response))
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.message);
+        } else {
+          setImages((prevImages) => {
+            const index = prevImages.findIndex(
+              (photo) => photo._id === photoToEdit._id
+            );
+            if (index !== -1) {
+              return [
+                ...prevImages.slice(0, index),
+                {
+                  ...prevImages[index],
+                  title,
+                  description,
+                  category:
+                    category.length < 0 ? category.map((x) => x.value) : null,
+                  artType:
+                    artType.length < 0 ? artType.map((x) => x.value) : null,
+                },
+                ...prevImages.slice(index + 1),
+              ];
+            }
+            return prevImages;
+          });
+          setModal(false);
+        }
+      })
       .catch((error) => console.log(error));
   };
 

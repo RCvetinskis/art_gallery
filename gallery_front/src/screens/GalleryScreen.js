@@ -18,12 +18,12 @@ import {
 import { sortArray } from "../utilities/sortArray";
 
 const GalleryScreen = () => {
-  const { loading, setLoading } = useContext(mainContext);
+  const { loading, setLoading, images, setImages } = useContext(mainContext);
   const [showGallery, setShowGallery] = useState("Drawings");
   const [sortingState, setSortingState] = useState("Default");
 
   // state for/from api
-  const [images, setImages] = useState([]);
+
   const [totalPages, setTotalPages] = useState();
   const [pageNumber, setPageNumber] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");

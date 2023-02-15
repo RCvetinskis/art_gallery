@@ -30,7 +30,7 @@ const CustomModal = ({ setModal, content, photoToEdit }) => {
           {content === "contact" ? (
             <EmailInput />
           ) : (
-            <EditPhoto photoToEdit={photoToEdit} />
+            <EditPhoto photoToEdit={photoToEdit} setModal={setModal} />
           )}
         </div>
       </div>
